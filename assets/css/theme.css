@@ -72,7 +72,14 @@ body
   background-position: 0px 0px, 5px 5px, 0px 0px
   
 }
-
+.check
+{
+  display: block;
+  width: 10px;
+  height: 10px;
+  background: yellow;
+  
+}
 [tabindex="-1"]:focus:not(:focus-visible) 
 {
   outline: 0 !important;
