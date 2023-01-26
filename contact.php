@@ -1,6 +1,8 @@
 ﻿<?php
 
-if (isset)($_POST)['submit'])) {
+if (isset)($_POST)['submit'])) 
+
+{
 
     $cf-name = $_POST['cf-name'];
     $cf-email = $_POST['cf-email'];
