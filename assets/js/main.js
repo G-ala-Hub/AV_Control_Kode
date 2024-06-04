@@ -1,24 +1,4 @@
 
-
-/*------------------------------------------------------------------
-[Table of contents]
-
-1. Loader
-2. Fullpage
-3. Set Section Scheme
-4. Scroll progress
-5. Navigation
-6. Back to top
-7. Backgrounds
-8. Animations
-9. Countdown
-10. Magnific Popup
-11. Slider
-12. Subscribe Form
-13. Contact Form
-14. Bootstrap
--------------------------------------------------------------------*/
-
 (function($) {
     "use strict";
 
@@ -744,38 +724,61 @@
     }
   }
 
-  // [13. Contact Form]
-  function ln_contactForm(){
+  function ln_contactForm() {
     var $contactForm = $('.contact-form');
 
-    if ( $contactForm.length > 0 ){
-      $contactForm.each( function(){
-        var el = $(this),
-          elResult = el.find('.contact-form-result');
+    console.log("Contact forms found: ", $contactForm.length);
 
-        el.find('form').validate({
-          submitHandler: function(form) {
-            elResult.fadeOut( 500 );
+    if ($contactForm.length > 0) {
+        $contactForm.each(function () {
+            var el = $(this),
+                elResult = el.find('.contact-form-result');
 
-            $(form).ajaxSubmit({
-              target: elResult,
-              dataType: 'json',
-              success: function( data ) {
-                elResult.html( data.message ).fadeIn( 500 );
-                if( data.alert != 'error' ) {
-                  $(form).clearForm();
-                  setTimeout(function(){
-                    elResult.fadeOut( 500 );
-                  }, 5000);
-                };
-              }
+            console.log("Processing contact form: ", el);
+
+            el.find('form').validate({
+                submitHandler: function (form) {
+                    elResult.fadeOut(500);
+
+                    console.log("Submitting form via AJAX...");
+
+                    $(form).ajaxSubmit({
+                        target: elResult,
+                        dataType: 'json',
+                        success: function (data) {
+                          try {
+                              // Attempt to parse the response as JSON
+                              var responseData = JSON.parse(data);
+                      
+                              // Check if the response contains the expected JSON structure
+                              if (responseData && responseData.message) {
+                                  elResult.html(responseData.message).fadeIn(500);
+                      
+                                  if (responseData.alert !== 'error') {
+                                      $(form).clearForm();
+                                      setTimeout(function () {
+                                          elResult.fadeOut(500);
+                                      }, 5000);
+                                  }
+                              } else {
+                                  console.error("Invalid JSON response: ", data);
+                                  elResult.html("Error: Invalid response format").fadeIn(500);
+                              }
+                          } catch (error) {
+                              // Handle parsing errors (response is not JSON)
+                              console.error("Error parsing JSON response: ", error);
+                              elResult.html("Error: Invalid response format").fadeIn(500);
+                          }
+                      }
+                      
+                    });
+                }
             });
-          }
-        });
 
-      });
+        });
     }
-  }
+}
+
 
   // [14. Bootstrap]
   function ln_bootstrap() {
