@@ -3,7 +3,8 @@ name: Deploy to Crazy Domains
 on:
   push:
     branches:
-      - main  # Ensure this is the correct branch
+      - main  # Ensure this is the correct branch 
+      
 
 jobs:
   deploy:
