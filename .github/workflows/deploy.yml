@@ -3,7 +3,7 @@ name: Deploy to Crazy Domains
 on:
   push:
     branches:
-      - main  # Make sure this matches your default branch
+      - main
 
 jobs:
   deploy:
@@ -26,11 +26,8 @@ jobs:
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           FTP_PATH: ${{ secrets.FTP_PATH }}
         run: |
-          # List files in the current directory to verify
-          ls -al
-
-          # Use lftp to mirror the local files to the remote server
           lftp -c "
+          set ftp:ssl-allow no;  # Disable SSL/TLS certificate verification
           open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER;
           mirror --reverse --delete --verbose ./ $FTP_PATH
           "
