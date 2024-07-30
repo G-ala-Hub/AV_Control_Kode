@@ -3,8 +3,7 @@ name: Deploy to Crazy Domains
 on:
   push:
     branches:
-      - main  # Change this to your default branch if it's not teh
-      
+      - main  # Ensure this is the correct branch
 
 jobs:
   deploy:
@@ -17,6 +16,9 @@ jobs:
       - name: Install lftp
         run: sudo apt-get install -y lftp
 
+      - name: List files and directories
+        run: ls -al
+
       - name: Deploy to Crazy Domains
         env:
           FTP_SERVER: ${{ secrets.FTP_SERVER }}
@@ -24,8 +26,14 @@ jobs:
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           FTP_PATH: ${{ secrets.FTP_PATH }}
         run: |
+          # Verify the correct directory name by listing directories
+          ls -al
+
           # Navigate to the directory containing the files to deploy
-          cd AV_Control_Kode
+          cd Gerald  
+
+          # List files in the target directory to verify
+          ls -al
 
           # Use lftp to mirror the local files to the remote server
           lftp -c "
