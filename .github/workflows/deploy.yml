@@ -3,8 +3,7 @@ name: Deploy to Crazy Domains
 on:
   push:
     branches:
-      - main  # Ensure this is the correct branch 
-      
+      - main  # Make sure this matches your default branch
 
 jobs:
   deploy:
@@ -27,13 +26,7 @@ jobs:
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           FTP_PATH: ${{ secrets.FTP_PATH }}
         run: |
-          # Verify the correct directory name by listing directories
-          ls -al
-
-          # Navigate to the directory containing the files to deploy
-          cd Gerald  
-
-          # List files in the target directory to verify
+          # List files in the current directory to verify
           ls -al
 
           # Use lftp to mirror the local files to the remote server
