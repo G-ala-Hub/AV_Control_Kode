@@ -20450,3 +20450,89 @@ button.mfp-arrow.mfp-arrow-right::after {
 }
 
 
+.vs-code-mockup {
+  background: #1e1e1e;
+  border-radius: 19px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.vs-code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #333;
+  padding: 8px 12px;
+  color: #fff;
+}
+.vs-code-buttons {
+  display: flex;
+  gap: 4px;
+}
+.vs-code-button {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.vs-code-button.close {
+  background: #ff5f56;
+}
+.vs-code-button.minimize {
+  background: #ffbd2e;
+}
+.vs-code-button.maximize {
+  background: #27c93f;
+}
+.vs-code-title {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 14px;
+}
+.vs-code-body {
+  display: flex;
+  height: 300px; /* Adjust as needed */
+}
+.vs-code-sidebar {
+  background: #252526;
+  width: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0;
+}
+.vs-code-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.vs-code-sidebar li {
+  padding: 8px 0;
+}
+.vs-code-sidebar li.active {
+  background: #007acc;
+}
+.vs-code-sidebar img {
+  width: 20px;
+  height: 20px;
+}
+.vs-code-content {
+  background: #1e1e1e;
+  flex-grow: 1;
+  padding: 20px;
+  overflow: auto;
+  color: white;
+}
+
+.bold-thick {
+  font-weight: 700; /* Makes text bold */
+  font-size: 1.1em; /* Makes text thicker */
+}
+
+.toneful {
+  background: linear-gradient(to left, #b0b0b1, #b4af37); /* Gradient from grey to yellow */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent; /* Fallback color for non-WebKit browsers */
+  font-weight: 700; /* Optional: make it bold */
+  font-size: 1.1em; /* Optional: adjust the size if needed */
+}
