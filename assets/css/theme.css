@@ -20544,12 +20544,13 @@ button.mfp-arrow.mfp-arrow-right::after {
 }
 
 .small-logo {
-  max-width: 100px; /* Adjust the size as needed */
+  max-width: 110px; /* Adjust the size as needed */
   height: auto; /* Maintain aspect ratio */
 }
 
 .crestron-logo{
-  max-width: 100px; /* Adjust the size as needed */
+  max-width: 130px;
+  margin-top: 2.4rem;
   height: auto; /* Maintain aspect ratio */
 
 }
