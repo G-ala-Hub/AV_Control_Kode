@@ -20551,7 +20551,7 @@ button.mfp-arrow.mfp-arrow-right::after {
 .crestron-logo{
   max-width: 130px;
   margin-top: 2.4rem;
-  height: auto; /* Maintain aspect ratio */
+  height: auto; /* Maintain aspect ratio
 
 }
 
