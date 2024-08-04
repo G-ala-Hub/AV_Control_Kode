@@ -20011,7 +20011,7 @@ a.backtotop.active {
 .ln-copyright {
   display: none;
   position: fixed;
-  bottom: -4.5rem;
+  bottom: -9.5rem;
   left: 4.5rem;
   right: 4.5rem;
   width: auto;
@@ -20452,7 +20452,7 @@ button.mfp-arrow.mfp-arrow-right::after {
 
 .vs-code-mockup {
   background: #1e1e1e;
-  border-radius: 19px;
+  border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -20536,3 +20536,25 @@ button.mfp-arrow.mfp-arrow-right::after {
   font-weight: 700; /* Optional: make it bold */
   font-size: 1.1em; /* Optional: adjust the size if needed */
 }
+
+
+.small-heading {
+  font-size: 0.8rem; /* Adjust the font size as needed */
+  font-weight: normal; /* Optional: Adjust font weight if needed */
+}
+
+.small-logo {
+  max-width: 100px; /* Adjust the size as needed */
+  height: auto; /* Maintain aspect ratio */
+}
+
+.crestron-logo{
+  max-width: 100px; /* Adjust the size as needed */
+  height: auto; /* Maintain aspect ratio */
+
+}
+
+.trusted-by-section {
+  margin-top: 2rem; /* Adjust the top margin to move the section down */
+}
+
