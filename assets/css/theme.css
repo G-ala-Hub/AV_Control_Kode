@@ -20515,13 +20515,14 @@ button.mfp-arrow.mfp-arrow-right::after {
   width: 20px;
   height: 20px;
 }
-.vs-code-content {
+.language-html {
   background: #1e1e1e;
   flex-grow: 1;
-  padding: 20px;
-  overflow: auto;
-  color: white;
+
+  color: whitesmoke;
+  font-size: .7rem;
 }
+
 
 .bold-thick {
   font-weight: 700; /* Makes text bold */

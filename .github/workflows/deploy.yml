@@ -16,6 +16,15 @@ jobs:
       - name: Install lftp
         run: sudo apt-get install -y lftp
 
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.18.0' # Specify the Node.js version here
+
+      - name: Install dependencies
+        working-directory: assets/contact-form-backend/server
+        run: npm install
+
       - name: List files and directories
         run: ls -al
 
@@ -27,7 +36,19 @@ jobs:
           FTP_PATH: ${{ secrets.FTP_PATH }}
         run: |
           lftp -c "
-          set ftp:ssl-allow no;  # Disable SSL/TLS certificate verification
+          set ftp:ssl-allow no;
           open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER;
           mirror --reverse --delete --verbose ./ $FTP_PATH
           "
+
+      - name: Start Backend Server with Production Variables
+        env:
+          NODE_ENV: production
+          CORS_ORIGIN: http://your-production-url.com
+          EMAIL_SERVICE: outlook
+          EMAIL_USER: ${{ secrets.EMAIL_USER }}
+          EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+          EMAIL_RECIPIENT: info@avcontrolkode.com.au
+          PORT: 80
+        run: |
+          node assets/contact-form-backend/server/server.js
