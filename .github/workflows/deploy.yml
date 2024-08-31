@@ -19,7 +19,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16.18.0' # Specify the Node.js version here
+          node-version: '16.18.0'
 
       - name: Install dependencies
         working-directory: assets/contact-form-backend/server
@@ -44,11 +44,11 @@ jobs:
       - name: Start Backend Server with Production Variables
         env:
           NODE_ENV: production
-          CORS_ORIGIN: http://your-production-url.com
+          CORS_ORIGIN: https://www.avcontrolkode.com.au
           EMAIL_SERVICE: outlook
           EMAIL_USER: ${{ secrets.EMAIL_USER }}
           EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
           EMAIL_RECIPIENT: info@avcontrolkode.com.au
           PORT: 80
         run: |
-          node assets/contact-form-backend/server/server.js
+          nohup node assets/contact-form-backend/server/server.js &
