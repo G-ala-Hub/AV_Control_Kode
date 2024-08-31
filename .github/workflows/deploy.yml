@@ -8,25 +8,37 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        # Checkout the latest code from the repository
+        
 
       - name: Install lftp
-        run: sudo apt-get install -y lftp
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lftp
+          echo "Installed lftp."
 
       - name: Install Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '16.18.0'
+        # Set up Node.js environment for the build
+       
 
       - name: Install dependencies
         working-directory: assets/contact-form-backend/server
-        run: npm install
-
+        run: |
+          npm install
+          echo "Installed Node.js dependencies."
+      
       - name: List files and directories
-        run: ls -al
+        run: |
+          echo "Listing files and directories:"
+          ls -al
+        # List files to verify the directory structure and files present
 
       - name: Deploy to Crazy Domains
         env:
@@ -35,11 +47,13 @@ jobs:
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           FTP_PATH: ${{ secrets.FTP_PATH }}
         run: |
+          echo "Starting deployment to Crazy Domains..."
           lftp -c "
           set ftp:ssl-allow no;
           open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER;
           mirror --reverse --delete --verbose ./ $FTP_PATH
           "
+          echo "Deployment to Crazy Domains completed."
 
       - name: Start Backend Server with Production Variables
         env:
@@ -51,4 +65,6 @@ jobs:
           EMAIL_RECIPIENT: info@avcontrolkode.com.au
           PORT: 80
         run: |
-          nohup node assets/contact-form-backend/server/server.js &
+          echo "Starting backend server with production variables..."
+          nohup node assets/contact-form-backend/server/server.js > server.log 2>&1 &
+          echo "Backend server started. Logs can be found in server.log."
