@@ -6,14 +6,16 @@ const cors = require('cors');
 const path = require('path');
 
 // Determine the environment and set the path for the .env file
-const env = process.env.NODE_ENV || 'development'; // Default to 'development'
+const env = process.env.NODE_ENV || 'development'; // Initialize the 'env' variable
 const envFile = env === 'production' ? '.env.production' : '.env.development';
 dotenv.config({ path: path.resolve(__dirname, envFile) });
+
+console.log(`Server is starting in ${env} mode...`);
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Middleware Setuping here
+// Middleware Setup
 app.use(cors({
     origin: process.env.CORS_ORIGIN || 'https://www.avcontrolkode.com.au', // Default to local if not set
     methods: ['GET', 'POST'],
@@ -73,8 +75,8 @@ app.post('/send-email', async (req, res) => {
 
 // Start the Server
 app.listen(port, '0.0.0.0', () => {
-	console.log(`Server running on port ${port}`);
-	console.log(`EMAIL_USER: ${process.env.EMAIL_USER}`);
-	console.log(`EMAIL_PASS: ${process.env.EMAIL_PASS ? '********' : 'Not Set'}`);
-	console.log(`EMAIL_RECIPIENT: ${process.env.EMAIL_RECIPIENT}`);
+    console.log(`Server running on port ${port}`);
+    console.log(`EMAIL_USER: ${process.env.EMAIL_USER}`);
+    console.log(`EMAIL_PASS: ${process.env.EMAIL_PASS ? '********' : 'Not Set'}`);
+    console.log(`EMAIL_RECIPIENT: ${process.env.EMAIL_RECIPIENT}`);
 });
