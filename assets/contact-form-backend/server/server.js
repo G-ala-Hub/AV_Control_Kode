@@ -78,3 +78,8 @@ app.listen(port, () => {
     console.log(`EMAIL_PASS: ${process.env.EMAIL_PASS ? '********' : 'Not Set'}`);
     console.log(`EMAIL_RECIPIENT: ${process.env.EMAIL_RECIPIENT}`);
 });
+
+
+app.listen(port, '0.0.0.0', () => {
+    console.log('Server running on port', port);
+});
