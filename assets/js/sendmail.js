@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('cf');
 
+    const apiUrl = window.location.protocol === 'https:'
+        ? 'https://www.avcontorlkode.com.au/send-email'
+        : 'https://localhost:3000/send-email';
+
     form.addEventListener('submit', async (event) => {
         event.preventDefault(); // Prevent the default form submission
 
@@ -12,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         try {
-            const response = await fetch('http://localhost:3000/send-email', {
+            const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

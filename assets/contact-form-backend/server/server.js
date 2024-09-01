@@ -5,15 +5,15 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
 
-// Determine the environment and set the path for .env file
-const env = process.env.NODE_ENV || 'development'; // Use 'development' by default
+// Determine the environment and set the path for the .env file
+const env = process.env.NODE_ENV || 'development'; // Default to 'development'
 const envFile = env === 'production' ? '.env.production' : '.env.development';
 dotenv.config({ path: path.resolve(__dirname, envFile) });
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Middleware
+// Middleware Setup
 app.use(cors({
     origin: process.env.CORS_ORIGIN || 'http://127.0.0.1:5502', // Default to local if not set
     methods: ['GET', 'POST'],
@@ -22,7 +22,7 @@ app.use(cors({
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Serve static files
+// Serve Static Files
 app.use(express.static('public'));
 
 // Email Sending Route
@@ -32,9 +32,10 @@ app.post('/send-email', async (req, res) => {
 
     const { name, email, subject, message } = req.body;
 
+    // Validate request fields
     if (!name || !email || !message) {
         console.warn('Missing required fields');
-        return res.status(400).send('Missing required fields');
+        return res.status(400).json({ error: 'Missing required fields' });
     }
 
     console.log('Sending email with the following details:');
@@ -43,37 +44,37 @@ app.post('/send-email', async (req, res) => {
     console.log('Subject:', subject);
     console.log('Message:', message);
 
-    let transporter = nodemailer.createTransport({
-        service: process.env.EMAIL_SERVICE || 'gmail', // Default to gmail if not set
-        auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS
-        }
-    });
-
-    let mailOptions = {
-        from: email,
-        to: process.env.EMAIL_RECIPIENT,
-        subject: subject || 'New Message from Contact Form',
-        text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
-    };
-
-    console.log('Mail options:', mailOptions);
-
     try {
+        let transporter = nodemailer.createTransport({
+            service: process.env.EMAIL_SERVICE || 'gmail', // Default to 'gmail' if not set
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS
+            }
+        });
+
+        let mailOptions = {
+            from: email,
+            to: process.env.EMAIL_RECIPIENT,
+            subject: subject || 'New Message from Contact Form',
+            text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+        };
+
+        console.log('Mail options:', mailOptions);
+
         let info = await transporter.sendMail(mailOptions);
         console.log('Email sent successfully:', info.response);
-        res.status(200).send('Email sent successfully!');
+        res.status(200).json({ message: 'Email sent successfully!' });
     } catch (error) {
         console.error('Error sending email:', error.message);
-        res.status(500).send('Error sending email: ' + error.message);
+        res.status(500).json({ error: 'Error sending email: ' + error.message });
     }
 });
 
-// Start the server
+// Start the Server
 app.listen(port, () => {
-    console.log('Server running on port', port);
-    console.log('EMAIL_USER:', process.env.EMAIL_USER);
-    console.log('EMAIL_PASS:', process.env.EMAIL_PASS ? '********' : 'Not Set');
-    console.log('EMAIL_RECIPIENT:', process.env.EMAIL_RECIPIENT);
+    console.log(`Server running on port ${port}`);
+    console.log(`EMAIL_USER: ${process.env.EMAIL_USER}`);
+    console.log(`EMAIL_PASS: ${process.env.EMAIL_PASS ? '********' : 'Not Set'}`);
+    console.log(`EMAIL_RECIPIENT: ${process.env.EMAIL_RECIPIENT}`);
 });
