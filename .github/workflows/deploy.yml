@@ -63,15 +63,21 @@ jobs:
       - name: Start Backend Server with Production Variables
         env:
           NODE_ENV: production
-          CORS_ORIGIN: ${{ secrets.CORS_ORIGIN}}
-          EMAIL_SERVICE: ${{ secrets.EMAIL_SERVICE}}
+          CORS_ORIGIN: ${{ secrets.CORS_ORIGIN }}
+          EMAIL_SERVICE: ${{ secrets.EMAIL_SERVICE }}
           EMAIL_USER: ${{ secrets.EMAIL_USER }}
           EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
-          EMAIL_RECIPIENT: ${{ secrets.EMAIL_RECIPIENT}}
-          PORT: ${{ secrets.PORT}}
+          EMAIL_RECIPIENT: ${{ secrets.EMAIL_RECIPIENT }}
+          PORT: ${{ secrets.PORT }}
         run: |
           echo "Starting backend server with production variables..."
           nohup node assets/contact-form-backend/server/server.js > server.log 2>&1 &
           echo "Backend server started. Logs can be found in server.log."
         # Start the backend server with production environment variables.
         # The server logs will be written to `server.log`.
+
+      - name: Verify Backend Server is Running
+        run: |
+          sleep 5  # Wait for a few seconds to ensure the server starts
+          curl -I http://localhost:3000/send-email || echo "Server failed to start"
+        # A simple check to verify if the backend server is running by sending a HEAD request to the server.
