@@ -63,12 +63,12 @@ jobs:
       - name: Start Backend Server with Production Variables
         env:
           NODE_ENV: production
-          CORS_ORIGIN: https://www.avcontrolkode.com.au
-          EMAIL_SERVICE: outlook
+          CORS_ORIGIN: ${{ secrets.CORS_ORIGIN}}
+          EMAIL_SERVICE: ${{ secrets.EMAIL_SERVICE}}
           EMAIL_USER: ${{ secrets.EMAIL_USER }}
           EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
-          EMAIL_RECIPIENT: info@avcontrolkode.com.au
-          PORT: 80
+          EMAIL_RECIPIENT: ${{ secrets.EMAIL_RECIPIENT}}
+          PORT: ${{ secrets.PORT}}
         run: |
           echo "Starting backend server with production variables..."
           nohup node assets/contact-form-backend/server/server.js > server.log 2>&1 &
