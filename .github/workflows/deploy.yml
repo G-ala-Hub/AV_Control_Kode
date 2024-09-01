@@ -79,5 +79,5 @@ jobs:
       - name: Verify Backend Server is Running
         run: |
           sleep 5  # Wait for a few seconds to ensure the server starts
-          curl -I http://localhost:3000/send-email || echo "Server failed to start"
+          curl -I https://www.avcontrolkode.com.au/send-email || echo "Server failed to start"
         # A simple check to verify if the backend server is running by sending a HEAD request to the server.

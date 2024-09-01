@@ -72,14 +72,9 @@ app.post('/send-email', async (req, res) => {
 });
 
 // Start the Server
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-    console.log(`EMAIL_USER: ${process.env.EMAIL_USER}`);
-    console.log(`EMAIL_PASS: ${process.env.EMAIL_PASS ? '********' : 'Not Set'}`);
-    console.log(`EMAIL_RECIPIENT: ${process.env.EMAIL_RECIPIENT}`);
-});
-
-
 app.listen(port, '0.0.0.0', () => {
-    console.log('Server running on port', port);
+	console.log(`Server running on port ${port}`);
+	console.log(`EMAIL_USER: ${process.env.EMAIL_USER}`);
+	console.log(`EMAIL_PASS: ${process.env.EMAIL_PASS ? '********' : 'Not Set'}`);
+	console.log(`EMAIL_RECIPIENT: ${process.env.EMAIL_RECIPIENT}`);
 });
