@@ -13,7 +13,7 @@ dotenv.config({ path: path.resolve(__dirname, envFile) });
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Middleware Setup
+// Middleware Setuping here
 app.use(cors({
     origin: process.env.CORS_ORIGIN || 'https://www.avcontrolkode.com.au', // Default to local if not set
     methods: ['GET', 'POST'],
