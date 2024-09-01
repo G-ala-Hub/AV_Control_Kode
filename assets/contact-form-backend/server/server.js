@@ -15,7 +15,7 @@ const port = process.env.PORT || 3000;
 
 // Middleware Setup
 app.use(cors({
-    origin: process.env.CORS_ORIGIN || 'http://127.0.0.1:5502', // Default to local if not set
+    origin: process.env.CORS_ORIGIN || 'https://www.avcontrolkode.com.au', // Default to local if not set
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type']
 }));
