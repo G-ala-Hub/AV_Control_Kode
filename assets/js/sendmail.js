@@ -2,8 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('cf');
 
     const apiUrl = window.location.protocol === 'https:'
-        ? 'https://www.avcontorlkode.com.au/send-email'
-        : 'https://localhost:3000/send-email';
+	? 'https://www.avcontrolkode.com.au/send-email'
+	: 'http://localhost:3000/send-email';
 
     form.addEventListener('submit', async (event) => {
         event.preventDefault(); // Prevent the default form submission
