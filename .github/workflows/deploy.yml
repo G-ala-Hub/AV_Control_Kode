@@ -62,6 +62,16 @@ jobs:
           echo "$APACHE_CONF_CONTENT" | sudo tee /etc/apache2/sites-available/000-default.conf
           echo "Apache configuration updated."
 
+      - name: Enable Apache Modules
+        run: |
+          echo "Enabling required Apache modules..."
+          sudo a2enmod proxy
+          sudo a2enmod proxy_http
+          sudo a2enmod proxy_balancer
+          sudo a2enmod lbmethod_byrequests
+          sudo systemctl restart apache2
+          echo "Apache modules enabled."
+
       - name: Validate Apache Configuration
         run: |
           echo "Validating Apache configuration..."
