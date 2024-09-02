@@ -62,11 +62,20 @@ jobs:
           echo "$APACHE_CONF_CONTENT" | sudo tee /etc/apache2/sites-available/000-default.conf
           echo "Apache configuration updated."
 
+      - name: Validate Apache Configuration
+        run: |
+          echo "Validating Apache configuration..."
+          sudo apachectl configtest
+
       - name: Restart Apache
         run: |
           echo "Restarting Apache..."
-          sudo systemctl restart apache2
+          sudo systemctl restart apache2 || { echo "Apache restart failed"; exit 1; }
           echo "Apache restarted."
+          echo "Checking Apache status..."
+          sudo systemctl status apache2
+          echo "Fetching Apache logs..."
+          sudo journalctl -xeu apache2.service
 
       - name: Start Backend Server with PM2
         env:
