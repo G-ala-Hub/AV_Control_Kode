@@ -1,12 +1,11 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
-const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
 
-// Determine the environment and set the path for the .env file
-const env = process.env.NODE_ENV || 'development'; // Initialize the 'env' variable
+// Load environment variables
+const env = process.env.NODE_ENV || 'development';
 const envFile = env === 'production' ? '.env.production' : '.env.development';
 dotenv.config({ path: path.resolve(__dirname, envFile) });
 
@@ -17,12 +16,14 @@ const port = process.env.PORT || 3000;
 
 // Middleware Setup
 app.use(cors({
-    origin: process.env.CORS_ORIGIN || 'https://www.avcontrolkode.com.au', // Default to local if not set
+    origin: process.env.CORS_ORIGIN || 'https://www.avcontrolkode.com.au',
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type']
 }));
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+
+// Middleware to parse request bodies
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // Serve Static Files
 app.use(express.static('public'));
@@ -76,7 +77,4 @@ app.post('/send-email', async (req, res) => {
 // Start the Server
 app.listen(port, '0.0.0.0', () => {
     console.log(`Server running on port ${port}`);
-    console.log(`EMAIL_USER: ${process.env.EMAIL_USER}`);
-    console.log(`EMAIL_PASS: ${process.env.EMAIL_PASS ? '********' : 'Not Set'}`);
-    console.log(`EMAIL_RECIPIENT: ${process.env.EMAIL_RECIPIENT}`);
 });
