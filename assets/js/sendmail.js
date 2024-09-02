@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
+    // Determine the API URL based on the current protocol
     const apiUrl = window.location.protocol === 'https:'
         ? 'https://www.avcontrolkode.com.au/send-email'
         : 'http://localhost:3000/send-email';
@@ -37,11 +38,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Log the response status and text for better debugging
                 const errorText = await response.text();
                 console.error('Failed to send message:', response.status, errorText);
-                alert(`Failed to send message. Status: ${response.status}`);
+                alert(`Failed to send message. Status: ${response.status}. Message: ${errorText}`);
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('An error occurred while sending the message.');
+            alert('An error occurred while sending the message. Please try again later.');
         }
     });
 });

@@ -12,36 +12,28 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        # Checkout the latest code from the repository
-        # This ensures that the workflow runs with the latest commit on the main branch.
 
       - name: Install lftp
         run: |
           sudo apt-get update
           sudo apt-get install -y lftp
           echo "Installed lftp."
-        # lftp is required for deploying the code to the Crazy Domains server.
 
       - name: Install Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '16.18.0'
-        # Set up Node.js environment for the build.
-        # This is necessary to install the project's dependencies.
 
       - name: Install dependencies
         working-directory: assets/contact-form-backend/server
         run: |
           npm install
           echo "Installed Node.js dependencies."
-        # Install the required Node.js packages for the backend server.
 
       - name: List files and directories
         run: |
           echo "Listing files and directories:"
           ls -al
-        # List files to verify the directory structure and files present.
-        # Useful for debugging and ensuring the correct files are being deployed.
 
       - name: Deploy to Crazy Domains
         env:
@@ -57,8 +49,6 @@ jobs:
           mirror --reverse --delete --verbose --no-symlinks ./ $FTP_PATH
           "
           echo "Deployment to Crazy Domains completed."
-        # Deploy the files to the Crazy Domains server.
-        # The `--no-symlinks` option prevents errors related to symbolic links.
 
       - name: Start Backend Server with Production Variables
         env:
@@ -73,11 +63,29 @@ jobs:
           echo "Starting backend server with production variables..."
           nohup node assets/contact-form-backend/server/server.js > server.log 2>&1 &
           echo "Backend server started. Logs can be found in server.log."
-        # Start the backend server with production environment variables.
-        # The server logs will be written to `server.log`.
+
+      - name: Check Backend Server Logs
+        run: |
+          echo "Checking backend server logs for errors..."
+          if grep -i "error" server.log; then
+            echo "Errors found in server log:";
+            grep -i "error" server.log;
+            exit 1;
+          else
+            echo "No errors found in server log.";
+          fi
 
       - name: Verify Backend Server is Running
         run: |
           sleep 5  # Wait for a few seconds to ensure the server starts
-          curl -I https://www.avcontrolkode.com.au/send-email || echo "Server failed to start"
+          curl -I https://www.avcontrolkode.com.au/send-email || { echo "Server failed to start"; exit 1; }
         # A simple check to verify if the backend server is running by sending a HEAD request to the server.
+
+      - name: Send Test Email
+        run: |
+          echo "Sending test email to verify email functionality..."
+          curl -X POST https://www.avcontrolkode.com.au/send-email \
+            -H "Content-Type: application/json" \
+            -d '{"name":"Test User", "email":"test@example.com", "subject":"Test", "message":"This is a test."}' \
+          && echo "Test email sent successfully." || { echo "Failed to send test email"; exit 1; }
+        # Send a test email to ensure the email functionality is working as expected.
