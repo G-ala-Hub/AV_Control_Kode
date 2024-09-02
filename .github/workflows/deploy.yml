@@ -56,19 +56,10 @@ jobs:
 
       - name: Update Apache Configuration
         env:
-          APACHE_CONF_PATH: ${{ secrets.APACHE_CONF_PATH }} # Add this secret to store your Apache configuration path
+          APACHE_CONF_CONTENT: ${{ secrets.APACHE_CONF_CONTENT }}
         run: |
           echo "Updating Apache configuration..."
-          echo '
-          <VirtualHost *:80>
-              ServerName www.avcontrolkode.com.au
-
-              ProxyRequests Off
-              ProxyPass /send-email http://localhost:3000/send-email
-              ProxyPassReverse /send-email http://localhost:3000/send-email
-
-              # Additional settings
-          </VirtualHost>' | sudo tee /etc/apache2/sites-available/000-default.conf
+          echo "$APACHE_CONF_CONTENT" | sudo tee /etc/apache2/sites-available/000-default.conf
           echo "Apache configuration updated."
 
       - name: Restart Apache
