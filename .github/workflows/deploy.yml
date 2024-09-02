@@ -94,7 +94,7 @@ jobs:
           PORT: ${{ secrets.PORT }}
         run: |
           echo "Starting backend server with PM2..."
-          pm2 start assets/contact-form-backend/server/server.js --name "server.js" --env production || { echo "Failed to start backend server with PM2"; exit 1; }
+          pm2 start assets/contact-form-backend/server.js --name "contact-form-server" --env production || { echo "Failed to start backend server with PM2"; exit 1; }
           pm2 save
           echo "Backend server started with PM2."
 
