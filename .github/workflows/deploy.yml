@@ -54,6 +54,29 @@ jobs:
           "
           echo "Deployment to Crazy Domains completed."
 
+      - name: Update Apache Configuration
+        env:
+          APACHE_CONF_PATH: ${{ secrets.APACHE_CONF_PATH }} # Add this secret to store your Apache configuration path
+        run: |
+          echo "Updating Apache configuration..."
+          echo '
+          <VirtualHost *:80>
+              ServerName www.avcontrolkode.com.au
+
+              ProxyRequests Off
+              ProxyPass /send-email http://localhost:3000/send-email
+              ProxyPassReverse /send-email http://localhost:3000/send-email
+
+              # Additional settings
+          </VirtualHost>' | sudo tee /etc/apache2/sites-available/000-default.conf
+          echo "Apache configuration updated."
+
+      - name: Restart Apache
+        run: |
+          echo "Restarting Apache..."
+          sudo systemctl restart apache2
+          echo "Apache restarted."
+
       - name: Start Backend Server with PM2
         env:
           NODE_ENV: production
@@ -67,6 +90,7 @@ jobs:
           echo "Starting backend server with PM2..."
           pm2 start assets/contact-form-backend/server/server.js --name "contact-form-server" --env production
           pm2 save
+          echo "Backend server started with PM2."
 
       - name: Check PM2 logs
         run: pm2 logs
