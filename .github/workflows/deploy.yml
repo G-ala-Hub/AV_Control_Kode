@@ -30,6 +30,11 @@ jobs:
           npm install
           echo "Installed Node.js dependencies."
 
+      - name: Install pm2
+        run: |
+          sudo npm install -g pm2
+          echo "Installed pm2."
+
       - name: List files and directories
         run: |
           echo "Listing files and directories:"
@@ -50,7 +55,7 @@ jobs:
           "
           echo "Deployment to Crazy Domains completed."
 
-      - name: Start Backend Server with Production Variables
+      - name: Start Backend Server with pm2
         env:
           NODE_ENV: production
           CORS_ORIGIN: ${{ secrets.CORS_ORIGIN }}
@@ -60,16 +65,18 @@ jobs:
           EMAIL_RECIPIENT: ${{ secrets.EMAIL_RECIPIENT }}
           PORT: ${{ secrets.PORT }}
         run: |
-          echo "Starting backend server with production variables..."
-          nohup node assets/contact-form-backend/server/server.js > server.log 2>&1 &
-          echo "Backend server started. Logs can be found in server.log."
+          echo "Starting backend server with pm2..."
+          pm2 start assets/contact-form-backend/server/server.js --name backend --env production
+          pm2 save
+          echo "Backend server started. Process list saved."
 
       - name: Check Backend Server Logs
         run: |
           echo "Checking backend server logs for errors..."
-          if grep -i "error" server.log; then
+          pm2 logs backend --lines 100 | grep -i "error" || true
+          if pm2 logs backend | grep -i "error"; then
             echo "Errors found in server log:";
-            grep -i "error" server.log;
+            pm2 logs backend | grep -i "error";
             exit 1;
           else
             echo "No errors found in server log.";
