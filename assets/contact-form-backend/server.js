@@ -11,6 +11,9 @@ dotenv.config({ path: path.resolve(__dirname, envFile) });
 
 console.log(`Server is starting in ${env} mode...`);
 
+console.log(window.env.API_URL);
+
+
 const app = express();
 const port = process.env.PORT || 3000;
 

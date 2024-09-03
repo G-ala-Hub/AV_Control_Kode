@@ -22,10 +22,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         try {
+            // Show a loading indicator (optional)
+            document.getElementById('submit-button').disabled = true;
+
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    // Include a CSRF token if required by your backend
+                    // 'X-CSRF-Token': csrfToken,
                 },
                 body: JSON.stringify(data),
             });
@@ -42,6 +47,9 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Error:', error);
             alert('An error occurred while sending the message.');
+        } finally {
+            // Hide the loading indicator
+            document.getElementById('submit-button').disabled = false;
         }
     });
 });
