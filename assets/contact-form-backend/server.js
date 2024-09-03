@@ -11,18 +11,21 @@ dotenv.config({ path: path.resolve(__dirname, envFile) });
 
 console.log(`Server is starting in ${env} mode...`);
 
-console.log(window.env.API_URL);
-
+// Use process.env to access environment variables
+console.log('API_URL:', process.env.API_URL);
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 // Middleware Setup
 app.use(cors({
-    origin: process.env.CORS_ORIGIN || 'https://www.avcontrolkode.com.au',
+    origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type']
 }));
+
+app.use(express.static('public'));
+
 
 // Middleware to parse request bodies
 app.use(express.urlencoded({ extended: true }));
