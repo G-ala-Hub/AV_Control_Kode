@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -75,17 +75,13 @@ jobs:
       - name: Validate Apache Configuration
         run: |
           echo "Validating Apache configuration..."
-          sudo apachectl configtest
+          sudo apachectl configtest || { echo "Apache configuration is invalid"; exit 1; }
 
       - name: Restart Apache
         run: |
           echo "Restarting Apache..."
           sudo systemctl restart apache2 || { echo "Apache restart failed"; exit 1; }
           echo "Apache restarted."
-          echo "Checking Apache status..."
-          sudo systemctl status apache2
-          echo "Fetching Apache logs..."
-          sudo journalctl -xeu apache2.service
 
       - name: Start Backend Server with PM2
         env:
@@ -98,18 +94,8 @@ jobs:
           PORT: ${{ secrets.PORT }}
         run: |
           echo "Starting backend server with PM2..."
-          pm2 start assets/contact-form-backend/server/server.js --name "contact-form-server" --env production
+          pm2 start assets/contact-form-backend/server.js --name "contact-form-server" --env production || { echo "Failed to start backend server with PM2"; exit 1; }
           pm2 save
           echo "Backend server started with PM2."
 
-      # Comment out or remove the continuous log tailing
-      # - name: Check PM2 logs
-      #   run: pm2 logs --lines 20  # Limit log lines or use a different command
-
-      - name: Send Test Email
-        run: |
-          echo "Sending test email to verify email functionality..."
-          curl -X POST https://www.avcontrolkode.com.au/send-email \
-            -H "Content-Type: application/json" \
-            -d '{"name":"Test User", "email":"test@example.com", "subject":"Test", "message":"This is a test."}' \
-          && echo "Test email sent successfully." || { echo "Failed to send test email"; exit 1; }
+ 
