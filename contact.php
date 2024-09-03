@@ -1,5 +1,5 @@
 ﻿<?php
-require_once __DIR__ . '/vendor/autoload.php'; // Adjust the path as necessary
+require_once __DIR__ . '/vendor/autoload.php'; // Ensure this path is correct
 
 use Dotenv\Dotenv;
 
@@ -20,14 +20,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cf-submit-1'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Log POST data
     file_put_contents('php://stderr', print_r($_POST, true));
 
-    $cf_name = htmlspecialchars($_POST['cf-name']);
-    $cf_email = filter_var($_POST['cf-email'], FILTER_SANITIZE_EMAIL);
-    $cf_subject = htmlspecialchars($_POST['cf-subject']);
-    $cf_message = htmlspecialchars($_POST['cf-message']);
+    $cf_name = htmlspecialchars($_POST['cf-name'] ?? '');
+    $cf_email = filter_var($_POST['cf-email'] ?? '', FILTER_SANITIZE_EMAIL);
+    $cf_subject = htmlspecialchars($_POST['cf-subject'] ?? '');
+    $cf_message = htmlspecialchars($_POST['cf-message'] ?? '');
 
     if (!filter_var($cf_email, FILTER_VALIDATE_EMAIL)) {
         echo json_encode(["error" => "Invalid email address."]);
