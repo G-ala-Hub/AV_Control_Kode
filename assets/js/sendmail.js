@@ -8,34 +8,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const apiUrl = window.location.protocol === 'https:'
-        ? 'https://www.avcontrolkode.com.au/send-email'
-        : 'http://localhost:3000/send-email';
+        ? 'https://www.avcontrolkode.com.au/contact.php'
+        : 'http://localhost:3000/contact.php';
 
     form.addEventListener('submit', async (event) => {
         event.preventDefault(); // Prevent the default form submission
 
         const formData = new FormData(form);
-        const data = {};
-
-        formData.forEach((value, key) => {
-            data[key] = value;
-        });
 
         try {
             // Show a loading indicator (optional)
-            document.getElementById('submit-button').disabled = true;
+            const submitButton = document.getElementById('cf-submit-1');
+            if (submitButton) submitButton.disabled = true;
 
             const response = await fetch(apiUrl, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    // Include a CSRF token if required by your backend
-                    // 'X-CSRF-Token': csrfToken,
-                },
-                body: JSON.stringify(data),
+                body: formData, // Use FormData directly
             });
 
             if (response.ok) {
+                // Handle response based on how your PHP script sends it
+                const result = await response.text(); // Or use `response.json()` if PHP sends JSON
                 alert('Message sent successfully!');
                 form.reset();
             } else {
@@ -49,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('An error occurred while sending the message.');
         } finally {
             // Hide the loading indicator
-            document.getElementById('submit-button').disabled = false;
+            if (submitButton) submitButton.disabled = false;
         }
     });
 });

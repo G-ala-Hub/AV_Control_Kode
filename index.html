@@ -604,36 +604,37 @@
             </div>
             <div class="col-12 col-lg-6 offset-lg-1 animated" data-animation="fadeInUp" data-animation-delay="150">
               <div class="contact-form">
-                <form class="mb-0" id="cf" name="cf" autocomplete="off">
+                <form class="mb-0" id="cf" name="cf" method="post" action="http://localhost:3000/contact.php" autocomplete="off">
                   <div class="form-row">
                       <div class="col-12 col-md-6">
                           <div class="form-group">
-                              <input type="text" id="cf-name" name="name" placeholder="Enter your name" class="form-control required">
+                              <input type="text" id="cf-name" name="cf-name" placeholder="Enter your name" class="form-control required">
                           </div>
                       </div>
                       <div class="col-12 col-md-6">
                           <div class="form-group">
-                              <input type="email" id="cf-email" name="email" placeholder="Enter your email address" class="form-control required">
+                              <input type="email" id="cf-email" name="cf-email" placeholder="Enter your email address" class="form-control required">
                           </div>
                       </div>
                       <div class="col-12">
                           <div class="form-group">
-                              <input type="text" id="cf-subject" name="subject" placeholder="Subject (Optional)" class="form-control">
+                              <input type="text" id="cf-subject" name="cf-subject" placeholder="Subject (Optional)" class="form-control">
                           </div>
                       </div>
                       <div class="col-12 mb-4">
                           <div class="form-group">
-                              <textarea name="message" id="cf-message" placeholder="Here goes your message" class="form-control required" rows="7"></textarea>
+                              <textarea name="cf-message" id="cf-message" placeholder="Here goes your message" class="form-control required" rows="7"></textarea>
                           </div>
                       </div>
                       <div class="col-12 d-none">
                           <input type="text" id="cf-botcheck" name="cf-botcheck" value="">
                       </div>
                       <div class="col-12">
-                          <button class="btn btn-white" type="submit" id="cf-submit" name="cf-submit">Send Message</button>
+                          <button class="btn btn-white" type="submit" id="cf-submit-1" name="cf-submit-1">Send Message</button>
                       </div>
                   </div>
               </form>
+              
               
                                   
                 <div class="contact-form-result"></div>
