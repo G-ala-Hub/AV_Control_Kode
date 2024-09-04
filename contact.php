@@ -1,18 +1,18 @@
 ﻿<?php
-require_once __DIR__ . '/vendor/autoload.php'; // Ensure this path is correct 
+require_once __DIR__ . '/vendor/autoload.php'; // Ensure this path is correct
 
 use Dotenv\Dotenv;
 
-// Load environment variables from .env file
-$dotenv = Dotenv::createImmutable(__DIR__);
+// Set the path to the .env file
+$dotenv = Dotenv::createImmutable(__DIR__, '.env.production');
 $dotenv->load();
 
-// Enable error reporting for debugging
+// Enable error reporting
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-header("Access-Control-Allow-Origin: http://127.0.0.1:5502");
+header("Access-Control-Allow-Origin: https://www.avcontrolkode.com.au");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
@@ -51,11 +51,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     http_response_code(400);
     echo json_encode(["error" => "Invalid request method."]);
 }
-
-echo "Email Recipient: " . $_ENV['EMAIL_RECIPIENT'];
-
-echo "<pre>";
-print_r($_POST);
-echo "</pre>";
 
 ?>
