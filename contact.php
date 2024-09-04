@@ -1,5 +1,5 @@
 ﻿<?php
-require_once __DIR__ . '/vendor/autoload.php'; // Ensure this path is correct
+require_once __DIR__ . '/vendor/autoload.php'; // Ensure this path is correct 
 
 use Dotenv\Dotenv;
 

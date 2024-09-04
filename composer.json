@@ -1,0 +1,16 @@
+{
+    "name": "gerald/av_control_kode",
+    "autoload": {
+        "psr-4": {
+            "Gerald\\AvControlKode\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Gerald Wala"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
