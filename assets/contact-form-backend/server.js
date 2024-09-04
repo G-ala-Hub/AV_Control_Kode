@@ -12,7 +12,9 @@ dotenv.config({ path: path.resolve(__dirname, envFile) });
 console.log(`Server is starting in ${env} mode...`);
 
 // Use process.env to access environment variables
-console.log('API_URL:', process.env.API_URL);
+console.log('CORS_ORIGIN:', process.env.CORS_ORIGIN);
+console.log('Email service:', process.env.EMAIL_SERVICE);
+console.log('Port:', process.env.PORT);
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -23,9 +25,6 @@ app.use(cors({
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type']
 }));
-
-app.use(express.static('public'));
-
 
 // Middleware to parse request bodies
 app.use(express.urlencoded({ extended: true }));
@@ -55,7 +54,7 @@ app.post('/send-email', async (req, res) => {
 
     try {
         let transporter = nodemailer.createTransport({
-            service: process.env.EMAIL_SERVICE || 'gmail', // Default to 'gmail' if not set
+            service: process.env.EMAIL_SERVICE || 'gmail',
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS
