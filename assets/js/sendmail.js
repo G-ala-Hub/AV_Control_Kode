@@ -7,6 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
+    // Ensure the submit button exists
+    const submitButton = document.getElementById('cf-submit-1');
+    if (!submitButton) {
+        console.error('Submit button with ID "cf-submit-1" not found');
+        return;
+    }
+
     const apiUrl = window.location.protocol === 'https:'
         ? 'https://www.avcontrolkode.com.au/contact.php'
         : 'http://localhost:3000/contact.php';
@@ -18,8 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // Show a loading indicator (optional)
-            const submitButton = document.getElementById('cf-submit-1');
-            if (submitButton) submitButton.disabled = true;
+            submitButton.disabled = true;
 
             const response = await fetch(apiUrl, {
                 method: 'POST',
@@ -42,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('An error occurred while sending the message.');
         } finally {
             // Hide the loading indicator
-            if (submitButton) submitButton.disabled = false;
+            submitButton.disabled = false;
         }
     });
 });

@@ -32,7 +32,6 @@ jobs:
           echo "Installed Composer."
 
       - name: Install PHP Dependencies
-        working-directory: assets/contact-form-backend/server
         run: |
           composer install
           echo "Installed PHP dependencies."
