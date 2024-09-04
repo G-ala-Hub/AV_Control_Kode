@@ -22,8 +22,20 @@ jobs:
       - name: Install PHP
         run: |
           sudo apt-get update
-          sudo apt-get install -y php php-cli php-mbstring php-xml
+          sudo apt-get install -y php php-cli php-mbstring php-xml unzip
           echo "Installed PHP."
+
+      - name: Install Composer
+        run: |
+          curl -sS https://getcomposer.org/installer | php
+          sudo mv composer.phar /usr/local/bin/composer
+          echo "Installed Composer."
+
+      - name: Install PHP Dependencies
+        working-directory: assets/contact-form-backend/server
+        run: |
+          composer install
+          echo "Installed PHP dependencies."
 
       - name: Install Node.js
         uses: actions/setup-node@v2
@@ -33,7 +45,7 @@ jobs:
       - name: Install PM2
         run: npm install -g pm2
 
-      - name: Install dependencies
+      - name: Install Node.js Dependencies
         working-directory: assets/contact-form-backend/server
         run: |
           npm install
