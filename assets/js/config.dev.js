@@ -1,4 +1,4 @@
 // config.dev.js
 window.env = {
-    API_URL: 'http://localhost:3000' // Development Local URL
+    API_URL: 'http://localhost:8000' // Development Local URL
 };

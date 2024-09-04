@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const apiUrl = window.location.protocol === 'https:'
         ? 'https://www.avcontrolkode.com.au/contact.php'
-        : 'http://localhost:3000/contact.php';
+        : 'http://localhost:8000/contact.php';
 
     form.addEventListener('submit', async (event) => {
         event.preventDefault(); // Prevent the default form submission
