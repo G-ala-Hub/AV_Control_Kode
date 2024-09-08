@@ -8,47 +8,50 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Ensure the submit button exists
-    const submitButton = document.getElementById('cf-submit-1');
+    const submitButton = document.getElementById('cf-submit');
     if (!submitButton) {
-        console.error('Submit button with ID "cf-submit-1" not found');
+        console.error('Submit button with ID "cf-submit" not found');
         return;
     }
 
-    const apiUrl = window.location.protocol === 'https:'
-        ? 'https://www.avcontrolkode.com.au/contact.php'
-        : 'http://localhost:8000/contact.php';
+    // Set Formspree API URL
+    const apiUrl = 'https://formspree.io/f/mwpezypg';
 
+    // Handle form submission
     form.addEventListener('submit', async (event) => {
-        event.preventDefault(); // Prevent the default form submission
+        event.preventDefault(); // Prevent default form submission behavior
 
-        const formData = new FormData(form);
+        const formData = new FormData(form); // Gather form data
 
         try {
-            // Show a loading indicator (optional)
+            // Disable the submit button and show loading state
             submitButton.disabled = true;
+            submitButton.innerHTML = 'Sending...'; // Optional loading text
 
             const response = await fetch(apiUrl, {
                 method: 'POST',
-                body: formData, // Use FormData directly
+                headers: {
+                    'Accept': 'application/json'
+                },
+                body: formData, // Use FormData for form data submission
             });
 
             if (response.ok) {
-                // Handle response based on how your PHP script sends it
-                const result = await response.text(); // Or use `response.json()` if PHP sends JSON
+                const result = await response.json(); // Parse JSON response
                 alert('Message sent successfully!');
-                form.reset();
+                form.reset(); // Reset the form after successful submission
             } else {
-                // Log the response status and text for better debugging
-                const errorText = await response.text();
-                console.error('Failed to send message:', response.status, errorText);
-                alert(`Failed to send message. Status: ${response.status}`);
+                const errorData = await response.json();
+                console.error('Failed to send message:', response.status, errorData);
+                alert(`Failed to send message: ${errorData.errors.map(e => e.message).join(', ')}`);
             }
         } catch (error) {
-            console.error('Error:', error);
-            alert('An error occurred while sending the message.');
+            console.error('Error occurred while sending message:', error);
+            alert('An error occurred while sending the message. Please try again later.');
         } finally {
-            // Hide the loading indicator
+            // Re-enable the submit button and reset the text
             submitButton.disabled = false;
+            submitButton.innerHTML = 'Send Message'; // Restore button text
         }
     });
 });
