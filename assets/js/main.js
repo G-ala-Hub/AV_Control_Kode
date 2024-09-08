@@ -754,20 +754,20 @@
                               if (responseData && responseData.message) {
                                   elResult.html(responseData.message).fadeIn(500);
                       
-                                  if (responseData.alert !== 'error') {
+                                  if (responseData.alert !== '') {
                                       $(form).clearForm();
                                       setTimeout(function () {
                                           elResult.fadeOut(500);
                                       }, 5000);
                                   }
                               } else {
-                                  console.error("Invalid JSON response: ", data);
-                                  elResult.html("Error: Invalid response format").fadeIn(500);
+                                  //console.error("Invalid JSON response: ", data);
+                                  //elResult.html("Error: Invalid response format").fadeIn(500);
                               }
                           } catch (error) {
                               // Handle parsing errors (response is not JSON)
-                              console.error("Error parsing JSON response: ", error);
-                              elResult.html("Error: Invalid response format").fadeIn(500);
+                              //console.error("Error parsing JSON response: ", error);
+                              //elResult.html("Error: Invalid response format").fadeIn(500);
                           }
                       }
                       
