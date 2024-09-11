@@ -112,8 +112,10 @@ void _UserInterfaceConstructor
 
 Void RetrieveUserInfo()
 {
-    string _BrowserType = "${browserName}";
-    string _IPAddress = "${ipAddress}";
+    string _BrowserType = ;
+    string _IPAddress = ;
+      _BrowserType = "${browserName}";
+      _IPAddress = "${ipAddress}";
    
 }
   `;

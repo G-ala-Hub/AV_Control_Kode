@@ -14,10 +14,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install lftp
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y lftp
-          echo "Installed lftp."
+        run: sudo apt-get install -y lftp
+
+      - name: List files and directories
+        run: ls -al
 
       - name: Deploy to Crazy Domains
         env:
@@ -26,10 +26,8 @@ jobs:
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           FTP_PATH: ${{ secrets.FTP_PATH }}
         run: |
-          echo "Starting deployment to Crazy Domains..."
           lftp -c "
-          set ftp:ssl-allow no;
+          set ftp:ssl-allow no;  # Disable SSL/TLS certificate verification
           open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER;
-          mirror --reverse --delete --verbose --no-symlinks ./ $FTP_PATH
+          mirror --reverse --delete --verbose ./ $FTP_PATH
           "
-          echo "Deployment to Crazy Domains completed."
