@@ -5,6 +5,8 @@
  * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
+
+ 
 :root {
   --blue: #405be8;
   --indigo: #4b21ff;
@@ -20449,13 +20451,34 @@ button.mfp-arrow.mfp-arrow-right::after {
   background: #fff;
 }
 
+#code-snippet {
+  white-space: pre-wrap; /* Allows line breaks in the code */
+  overflow: hidden; /* Hide scrollbars */
+  height: 400px; /* Set a fixed height for the code container */
+  font-family: 'Courier New', Courier, monospace; /* Code font */
+  font-size: 14px;
+  line-height: 1.5; /* Adjust line spacing */
+  padding: 10px;
+  background-color: #1e1e1e; /* VS Code style background */
+  color: #d4d4d4; /* VS Code style font color */
+  border-radius: 4px;
+  position: relative; /* Needed for scrollbar hiding */
+}
+
+#code-snippet::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for WebKit-based browsers */
+}
+
 
 .vs-code-mockup {
   background: #1e1e1e;
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: 30rem;
+  width: 35rem;
 }
+
 .vs-code-header {
   display: flex;
   justify-content: space-between;
@@ -20464,34 +20487,42 @@ button.mfp-arrow.mfp-arrow-right::after {
   padding: 8px 12px;
   color: #fff;
 }
+
 .vs-code-buttons {
   display: flex;
   gap: 4px;
 }
+
 .vs-code-button {
   width: 12px;
   height: 12px;
   border-radius: 50%;
   display: inline-block;
 }
+
 .vs-code-button.close {
   background: #ff5f56;
 }
+
 .vs-code-button.minimize {
   background: #ffbd2e;
 }
+
 .vs-code-button.maximize {
   background: #27c93f;
 }
+
 .vs-code-title {
   flex-grow: 1;
   text-align: center;
   font-size: 14px;
 }
+
 .vs-code-body {
   display: flex;
   height: 300px; /* Adjust as needed */
 }
+
 .vs-code-sidebar {
   background: #252526;
   width: 50px;
@@ -20499,29 +20530,59 @@ button.mfp-arrow.mfp-arrow-right::after {
   flex-direction: column;
   align-items: center;
   padding: 10px 0;
+  height: 30rem;
 }
+
 .vs-code-sidebar ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
+
 .vs-code-sidebar li {
   padding: 8px 0;
 }
+
 .vs-code-sidebar li.active {
   background: #007acc;
 }
+
 .vs-code-sidebar img {
   width: 20px;
   height: 20px;
 }
+
 .language-html {
   background: #1e1e1e;
   flex-grow: 1;
-
   color: whitesmoke;
   font-size: .7rem;
 }
+
+.user-info {
+  font-family: 'Courier New', Courier, monospace;
+  color: #e5e5e5; /* Adjust color to match your design */
+  background-color: #333; /* Adjust background color as needed */
+  padding: 10px;
+  margin: 10px 0;
+}
+
+/* Custom styling for code snippets */
+.token.keyword {
+  color: #ff79ff; /* Custom color for keywords */
+  font-weight: bold; /* Make keywords bold */
+}
+.token.string {
+  color: #f1fa8c; /* Custom color for strings */
+}
+.token.comment {
+  color: #6272a4; /* Custom color for comments */
+  font-style: italic; /* Italicize comments */
+}
+.token.function {
+  color: #50fa7b; /* Custom color for functions */
+}
+/* Add more styles as needed */
 
 
 .bold-thick {
@@ -20559,4 +20620,6 @@ button.mfp-arrow.mfp-arrow-right::after {
 .trusted-by-section {
   margin-top: 2rem; /* Adjust the top margin to move the section down */
 }
+
+
 

@@ -19,43 +19,6 @@ jobs:
           sudo apt-get install -y lftp
           echo "Installed lftp."
 
-      - name: Install PHP
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y php php-cli php-mbstring php-xml unzip
-          echo "Installed PHP."
-
-      - name: Install Composer
-        run: |
-          curl -sS https://getcomposer.org/installer | php
-          sudo mv composer.phar /usr/local/bin/composer
-          echo "Installed Composer."
-
-      - name: Install PHP Dependencies
-        run: |
-          composer install
-          echo "Installed PHP dependencies."
-
-      - name: Install Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16.18.0'
-
-      - name: Install PM2
-        run: npm install -g pm2
-
-      - name: Install Node.js Dependencies
-        working-directory: assets/contact-form-backend/server
-        run: |
-          npm install
-          echo "Installed Node.js dependencies."
-
-      - name: List files and directories
-        run: |
-          echo "Listing files and directories:"
-          ls -al
-          ls -al assets/contact-form-backend/server
-
       - name: Deploy to Crazy Domains
         env:
           FTP_SERVER: ${{ secrets.FTP_SERVER }}
@@ -70,47 +33,3 @@ jobs:
           mirror --reverse --delete --verbose --no-symlinks ./ $FTP_PATH
           "
           echo "Deployment to Crazy Domains completed."
-
-      - name: Update Apache Configuration
-        env:
-          APACHE_CONF_CONTENT: ${{ secrets.APACHE_CONF_CONTENT }}
-        run: |
-          echo "Updating Apache configuration..."
-          echo "$APACHE_CONF_CONTENT" | sudo tee /etc/apache2/sites-available/000-default.conf
-          echo "Apache configuration updated."
-
-      - name: Enable Apache Modules
-        run: |
-          echo "Enabling required Apache modules..."
-          sudo a2enmod proxy
-          sudo a2enmod proxy_http
-          sudo a2enmod proxy_balancer
-          sudo a2enmod lbmethod_byrequests
-          sudo systemctl restart apache2
-          echo "Apache modules enabled."
-
-      - name: Validate Apache Configuration
-        run: |
-          echo "Validating Apache configuration..."
-          sudo apachectl configtest || { echo "Apache configuration is invalid"; exit 1; }
-
-      - name: Restart Apache
-        run: |
-          echo "Restarting Apache..."
-          sudo systemctl restart apache2 || { echo "Apache restart failed"; exit 1; }
-          echo "Apache restarted."
-
-      - name: Start Backend Server with PM2
-        env:
-          NODE_ENV: production
-          CORS_ORIGIN: ${{ secrets.CORS_ORIGIN }}
-          EMAIL_SERVICE: ${{ secrets.EMAIL_SERVICE }}
-          EMAIL_USER: ${{ secrets.EMAIL_USER }}
-          EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
-          EMAIL_RECIPIENT: ${{ secrets.EMAIL_RECIPIENT }}
-          PORT: ${{ secrets.PORT }}
-        run: |
-          echo "Starting backend server with PM2..."
-          pm2 start assets/contact-form-backend/server.js --name "contact-form-server" --env production || { echo "Failed to start backend server with PM2"; exit 1; }
-          pm2 save
-          echo "Backend server started with PM2."
