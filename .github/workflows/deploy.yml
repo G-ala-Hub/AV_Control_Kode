@@ -16,8 +16,22 @@ jobs:
       - name: Install lftp
         run: sudo apt-get install -y lftp
 
-      - name: List files and directories
+      - name: List local files and directories
         run: ls -al
+
+      - name: Clean up FTP Server before deployment
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_PATH: ${{ secrets.FTP_PATH }}
+        run: |
+          lftp -c "
+          set ftp:ssl-allow no;  # Disable SSL/TLS certificate verification
+          open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER;
+          mirror --reverse --delete-first --verbose ./ $FTP_PATH
+          "
+          echo "Cleaned up FTP server."
 
       - name: Deploy to Crazy Domains
         env:
@@ -31,3 +45,4 @@ jobs:
           open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER;
           mirror --reverse --delete --verbose ./ $FTP_PATH
           "
+          echo "Deployment to Crazy Domains completed."
