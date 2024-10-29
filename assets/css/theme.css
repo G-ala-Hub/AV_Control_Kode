@@ -20610,16 +20610,31 @@ button.mfp-arrow.mfp-arrow-right::after {
   height: auto; /* Maintain aspect ratio */
 }
 
-.crestron-logo{
+.crestron-logo {
   max-width: 130px;
   margin-top: 2.4rem;
-  height: auto; /* Maintain aspect ratio
-
+  height: auto;
 }
 
-.trusted-by-section {
-  margin-top: 2rem; /* Adjust the top margin to move the section down */
+/* Change the background and text color of the code block */
+#code-snippet {
+  background-color: #1e1e1e; /* VS Code dark background */
+  padding: 10px;
+  border-radius: 5px;
 }
 
+/* Style for the <code> block */
+.vs-code-content code {
+  color: #dcdcaa; /* Change the code color to yellowish */
+  font-family: 'Courier New', monospace; /* A monospace font like in VS Code */
+}
 
+/* Optionally, syntax highlighting for JavaScript keywords */
+.language-javascript {
+  color: #569cd6; /* Blue for JavaScript */
+}
+
+.language-javascript .keyword {
+  color: #d73a49; /* Red for keywords */
+}
 
