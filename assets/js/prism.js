@@ -138,7 +138,7 @@ var Prism = (function (_self) {
 			 * @template T
 			 */
 			clone: function deepClone(o, visited) {
-				visited = visited || {};
+				visited = visited || {}; 
 
 				var clone; var id;
 				switch (_.util.type(o)) {
