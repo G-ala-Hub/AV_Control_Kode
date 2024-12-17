@@ -724,7 +724,7 @@
     }
   }
 
-  function ln_contactForm()  {
+  function ln_contactForm()   {
     var $contactForm = $('.contact-form');
 
     console.log("Contact forms found: ", $contactForm.length);
