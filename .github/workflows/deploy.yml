@@ -46,3 +46,5 @@ jobs:
           mirror --reverse --delete --verbose ./ $FTP_PATH;
           "
           echo "Fresh deployment to Crazy Domains completed."
+ 
+          
