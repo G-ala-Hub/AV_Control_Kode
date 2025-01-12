@@ -19,7 +19,7 @@ jobs:
       - name: List local files and directories
         run: ls -al
 
-      - name: Clean up FTP Server before deployment
+      - name: Clean FTP Server to Remove Existing Code
         env:
           FTP_SERVER: ${{ secrets.FTP_SERVER }}
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
@@ -27,13 +27,13 @@ jobs:
           FTP_PATH: ${{ secrets.FTP_PATH }}
         run: |
           lftp -c "
-          set ftp:ssl-allow no;  # Disable SSL/TLS certificate verification
+          set ftp:ssl-force true;
           open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER;
-          mirror --reverse --delete-first --verbose ./ $FTP_PATH
+          rm -r $FTP_PATH/* || echo 'No files to delete';
+          echo 'Remote directory cleaned successfully.'
           "
-          echo "Cleaned up FTP server."
 
-      - name: Deploy to Crazy Domains
+      - name: Deploy Fresh Code to Crazy Domains
         env:
           FTP_SERVER: ${{ secrets.FTP_SERVER }}
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
@@ -41,8 +41,10 @@ jobs:
           FTP_PATH: ${{ secrets.FTP_PATH }}
         run: |
           lftp -c "
-          set ftp:ssl-allow no;  # Disable SSL/TLS certificate verification
+          set ftp:ssl-force true;
           open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER;
-          mirror --reverse --delete --verbose ./ $FTP_PATH
+          mirror --reverse --delete --verbose ./ $FTP_PATH;
           "
-          echo "Deployment to Crazy Domains completed."
+          echo "Fresh deployment to Crazy Domains completed."
+ 
+          
