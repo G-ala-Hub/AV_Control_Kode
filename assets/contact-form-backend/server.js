@@ -3,6 +3,9 @@ const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
+const { body, validationResult } = require('express-validator'); // Add express-validator
+const rateLimit = require('express-rate-limit'); // Add express-rate-limit
+const helmet = require('helmet'); // Add helmet for security headers
 
 // Load environment variables
 const env = process.env.NODE_ENV || 'development';
@@ -10,8 +13,6 @@ const envFile = env === 'production' ? '.env.production' : '.env.development';
 dotenv.config({ path: path.resolve(__dirname, envFile) });
 
 console.log(`Server is starting in ${env} mode...`);
-
-// Use process.env to access environment variables
 console.log('CORS_ORIGIN:', process.env.CORS_ORIGIN);
 console.log('Email service:', process.env.EMAIL_SERVICE);
 console.log('Port:', process.env.PORT);
@@ -26,31 +27,41 @@ app.use(cors({
     allowedHeaders: ['Content-Type']
 }));
 
+// Helmet for securing HTTP headers
+app.use(helmet());
+
 // Middleware to parse request bodies
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// Rate limiting to avoid spam
+const emailLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 10, // Limit each IP to 10 requests per window
+    message: 'Too many email requests from this IP, please try again later.'
+});
+app.use('/send-email', emailLimiter);
 
 // Serve Static Files
 app.use(express.static('public'));
 
 // Email Sending Route
-app.post('/send-email', async (req, res) => {
-    console.log('Received POST request to /send-email');
-    console.log('Request body:', req.body);
+app.post('/send-email', [
+    body('name').trim().escape().notEmpty().withMessage('Name is required'),
+    body('email').isEmail().withMessage('Invalid email format').normalizeEmail(),
+    body('subject').optional().trim().escape(),
+    body('message').trim().escape().notEmpty().withMessage('Message is required')
+], async (req, res) => {
+    // Validate request fields
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
 
     const { name, email, subject, message } = req.body;
 
-    // Validate request fields
-    if (!name || !email || !message) {
-        console.warn('Missing required fields');
-        return res.status(400).json({ error: 'Missing required fields' });
-    }
-
-    console.log('Sending email with the following details:');
-    console.log('Name:', name);
-    console.log('Email:', email);
-    console.log('Subject:', subject);
-    console.log('Message:', message);
+    console.log('Received POST request to /send-email');
+    console.log('Request body:', req.body);
 
     try {
         let transporter = nodemailer.createTransport({
@@ -62,7 +73,8 @@ app.post('/send-email', async (req, res) => {
         });
 
         let mailOptions = {
-            from: email,
+            from: process.env.EMAIL_USER, // Use your own email address as "from"
+            replyTo: email, // Allow replies to the user's email
             to: process.env.EMAIL_RECIPIENT,
             subject: subject || 'New Message from Contact Form',
             text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`

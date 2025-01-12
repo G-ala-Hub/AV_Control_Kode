@@ -2,8 +2,9 @@
 require_once __DIR__ . '/vendor/autoload.php'; // Ensure this path is correct
 
 use Dotenv\Dotenv;
+use Respect\Validation\Validator as v;
 
-// Set the path to the .env file
+// Load environment variables
 $dotenv = Dotenv::createImmutable(__DIR__, '.env.production');
 $dotenv->load();
 
@@ -21,24 +22,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Log POST data
+    // Log POST data for debugging
     file_put_contents('php://stderr', print_r($_POST, true));
 
-    $cf_name = htmlspecialchars($_POST['cf-name'] ?? '');
+    // Sanitize and validate inputs
+    $cf_name = htmlspecialchars($_POST['cf-name'] ?? '', ENT_QUOTES, 'UTF-8');
     $cf_email = filter_var($_POST['cf-email'] ?? '', FILTER_SANITIZE_EMAIL);
-    $cf_subject = htmlspecialchars($_POST['cf-subject'] ?? '');
-    $cf_message = htmlspecialchars($_POST['cf-message'] ?? '');
+    $cf_subject = htmlspecialchars($_POST['cf-subject'] ?? '', ENT_QUOTES, 'UTF-8');
+    $cf_message = htmlspecialchars($_POST['cf-message'] ?? '', ENT_QUOTES, 'UTF-8');
 
+    // Validate email format
     if (!filter_var($cf_email, FILTER_VALIDATE_EMAIL)) {
         echo json_encode(["error" => "Invalid email address."]);
         exit();
     }
 
+    // Validate name and message length
+    if (empty($cf_name) || empty($cf_message)) {
+        echo json_encode(["error" => "Name and message are required."]);
+        exit();
+    }
+
+    // Prevent email header injection
+    if (preg_match("/[\r\n]/", $cf_email)) {
+        echo json_encode(["error" => "Invalid email format (header injection attempt detected)."]);
+        exit();
+    }
+
+    // Use environment variables for recipient email and other settings
     $mailTo = $_ENV['EMAIL_RECIPIENT'];
+
+    // Prepare email headers
     $headers = "From: ".$cf_email."\r\n";
     $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
     $txt = "You have received an email from ".$cf_name.".\n\n".$cf_message;
 
+    // Send email
     if (mail($mailTo, $cf_subject, $txt, $headers)) {
         header("Content-Type: application/json");
         echo json_encode(["message" => "Email sent successfully!"]);
